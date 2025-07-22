@@ -14,7 +14,7 @@ def get_confirmation():
         print("Invalid input")
         sleep(0.5)
         clear_lines(3)
-        get_confirmation()
+        return get_confirmation()
 
 def is_decimal(value):
     try:
@@ -23,17 +23,17 @@ def is_decimal(value):
     except (InvalidOperation, ValueError):
         return False
     
-def get_integer_input(message = "Enter a whole number:"):
-    number_input = input(f"{message}\n")
-    number_input = Decimal(number_input)
+def get_integer_input( message = "Enter a whole number:"):
+    while True:
+        try:
+                number_input = input(f"{message}\n")
+                number_input = Decimal(number_input)
 
-    if number_input % 2 == 0 or (number_input + 1) % 2 == 0:
-        return int(number_input)
-    else:
-        print("Invalid entry, you must enter a whole number:")
-        sleep(1.5)
-        clear_lines(7)
-        get_integer_input()
+                if number_input % 2 == 0 or (number_input + 1) % 2 == 0:
+                    return int(number_input)
+        except (InvalidOperation, ValueError):
+            sleep(1.5)
+            clear_lines(7)
 
 def get_decimal_input(message = "Enter a number:", error = "Invalid number"):
     number_input = input(f"{message}\n")
