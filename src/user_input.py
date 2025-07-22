@@ -26,26 +26,27 @@ def is_decimal(value):
 def get_integer_input( message = "Enter a whole number:"):
     while True:
         try:
-                number_input = input(f"{message}\n")
-                number_input = Decimal(number_input)
+            number_input = input(f"{message}\n")
+            number_input = Decimal(number_input)
 
-                if number_input % 2 == 0 or (number_input + 1) % 2 == 0:
-                    return int(number_input)
+            if number_input % 2 == 0 or (number_input + 1) % 2 == 0:
+                return int(number_input)
         except (InvalidOperation, ValueError):
             sleep(1.5)
             clear_lines(7)
 
 def get_decimal_input(message = "Enter a number:", error = "Invalid number"):
-    number_input = input(f"{message}\n")
-     
-    if is_decimal(number_input):
-        number_input = Decimal(number_input)
-        return number_input
-    else:
-        print(error)
-        sleep(0.9)
-        clear_lines(3)
-        get_decimal_input()
+    while True:
+        try:
+            number_input = input(f"{message}\n")
+            number_input = Decimal(number_input)
+
+            if is_decimal(number_input):
+                return number_input
+        except (InvalidOperation, ValueError):
+            print(error)
+            sleep(0.9)
+            clear_lines(3)
 
 def get_part_dimension():
        length_dimension = get_decimal_input("What is the length of your part (inches)?:")

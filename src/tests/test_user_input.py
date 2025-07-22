@@ -59,3 +59,21 @@ class TestGetIntegerInput(unittest.TestCase):
         mock_sleep.assert_called_once_with(1.5)
         mock_clear_lines.assert_called_once_with(7)
         self.assertEqual(mock_input.call_count, 2)
+
+class TestGetDecimalInput(unittest.TestCase):
+    @patch('user_input.input', return_value='3.14')
+    def test_get_decimal_input_valid(self, input):
+        self.assertEqual(get_decimal_input(), Decimal('3.14'))
+
+    @patch('builtins.print')
+    @patch('user_input.input', side_effect=['not_decimal', '2.5'])
+    @patch('user_input.sleep')
+    @patch('user_input.clear_lines')
+    def test_get_decimal_input_invalid(self, mock_clear_lines, mock_sleep, mock_input, mock_print):
+        result = get_decimal_input()
+        self.assertEqual(result, Decimal('2.5'))
+
+        mock_sleep.assert_called_once_with(0.9)
+        mock_clear_lines.assert_called_once_with(3)
+        self.assertEqual(mock_input.call_count, 2)
+        mock_print.assert_called_once_with("Invalid number") # I think we can ignore the error changing if it works with the default?
