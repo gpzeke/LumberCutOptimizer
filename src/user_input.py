@@ -34,6 +34,7 @@ def get_integer_input( message = "Enter a whole number:"):
         except (InvalidOperation, ValueError):
             sleep(1.5)
             clear_lines(7)
+            return get_integer_input()
 
 def get_decimal_input(message = "Enter a number:", error = "Invalid number"):
     while True:
@@ -47,10 +48,12 @@ def get_decimal_input(message = "Enter a number:", error = "Invalid number"):
             print(error)
             sleep(0.9)
             clear_lines(3)
+            return get_decimal_input()
 
 def get_part_dimension():
        length_dimension = get_decimal_input("What is the length of your part (inches)?:")
        width_dimension = get_decimal_input("What is the width of your part (inches)?: ")
        total_needed = get_integer_input("How many of this part do you require?: ")
-       print(f"{total_needed} part{'s'[:total_needed^1]} needed of size {length_dimension}\" x {width_dimension}\", correct?\n")
+       #print(f"{total_needed} part{'s'[:total_needed^1]} needed of size {length_dimension}\" x {width_dimension}\", correct?\n")
+       print(f"{total_needed} part{'s' if total_needed >= 1 else ''} needed of size {length_dimension}\" x {width_dimension}\", correct?\n")
        get_confirmation()

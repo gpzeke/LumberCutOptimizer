@@ -77,3 +77,34 @@ class TestGetDecimalInput(unittest.TestCase):
         mock_clear_lines.assert_called_once_with(3)
         self.assertEqual(mock_input.call_count, 2)
         mock_print.assert_called_once_with("Invalid number") # I think we can ignore the error changing if it works with the default?
+
+class TestGetPartDimension(unittest.TestCase):
+    @patch('builtins.print')
+    @patch('user_input.get_decimal_input', side_effect=[Decimal('10.5'), Decimal('5.25')])
+    @patch('user_input.get_integer_input', return_value=4)
+    @patch('user_input.get_confirmation', return_value=True)
+    def test_get_part_dimension_success(self, mock_confirm, mock_int_input, mock_dec_input, mock_print):
+        get_part_dimension()
+
+        self.assertEqual(mock_dec_input.call_count, 2)
+        mock_int_input.assert_called_once()
+        mock_confirm.assert_called_once()
+        mock_print.assert_any_call('4 parts needed of size 10.5" x 5.25", correct?\n')
+        
+    @patch('builtins.print')
+    @patch('user_input.input', side_effect=[
+        'bad',
+        '8.0',
+        'nope',
+        '3.5',
+        'wrong',
+        '2',
+    ])
+    @patch('user_input.get_confirmation', return_value=True)
+    def test_get_part_dimension_with_retries(self, mock_confirm, mock_input, mock_print):
+        result = get_part_dimension()
+        
+        mock_confirm.assert_called_once()
+        self.assertEqual(mock_input.call_count, 6)  # 3 invalid
+        mock_print.assert_any_call("2 parts needed of size 8.0\" x 3.5\", correct?\n")
+        self.assertIn(mock.call("Invalid number"), mock_print.call_args_list)
