@@ -57,3 +57,4 @@ def get_part_dimension():
        #print(f"{total_needed} part{'s'[:total_needed^1]} needed of size {length_dimension}\" x {width_dimension}\", correct?\n")
        print(f"{total_needed} part{'s' if total_needed >= 1 else ''} needed of size {length_dimension}\" x {width_dimension}\", correct?\n")
        get_confirmation()
+       return length_dimension, width_dimension, total_needed

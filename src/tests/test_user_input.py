@@ -108,3 +108,4 @@ class TestGetPartDimension(unittest.TestCase):
         self.assertEqual(mock_input.call_count, 6)  # 3 invalid
         mock_print.assert_any_call("2 parts needed of size 8.0\" x 3.5\", correct?\n")
         self.assertIn(mock.call("Invalid number"), mock_print.call_args_list)
+        self.assertEqual(result, (Decimal('8.0'), Decimal('3.5'), 2))
