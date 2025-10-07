@@ -51,10 +51,18 @@ def get_decimal_input(message = "Enter a number:", error = "Invalid number"):
             return get_decimal_input()
 
 def get_part_dimension():
-       length_dimension = get_decimal_input("What is the length of your part (inches)?:")
-       width_dimension = get_decimal_input("What is the width of your part (inches)?: ")
-       total_needed = get_integer_input("How many of this part do you require?: ")
-       #print(f"{total_needed} part{'s'[:total_needed^1]} needed of size {length_dimension}\" x {width_dimension}\", correct?\n")
-       print(f"{total_needed} part{'s' if total_needed >= 1 else ''} needed of size {length_dimension}\" x {width_dimension}\", correct?\n")
-       get_confirmation()
-       return length_dimension, width_dimension, total_needed
+    length_dimension = get_decimal_input("What is the length of your part (inches)?:")
+    width_dimension = get_decimal_input("What is the width of your part (inches)?: ")
+    total_needed = get_integer_input("How many of this part do you require?: ")
+    #print(f"{total_needed} part{'s'[:total_needed^1]} needed of size {length_dimension}\" x {width_dimension}\", correct?\n")
+    print(f"{total_needed} part{'s' if total_needed > 1 else ''} needed of size {length_dimension}\" x {width_dimension}\", correct?\n")
+    get_confirmation()
+    return length_dimension, width_dimension, total_needed
+
+def get_stock_dimension():
+    length_dimension = get_decimal_input("What is the length of your stock material (inches)?:")
+    width_dimension = get_decimal_input("What is the width of your stock material (inches)?: ")
+    total_available = get_integer_input("How many pieces of this stock do you have available?: ")
+    print(f"{total_available} piece{'s' if total_available > 1 else ''} available of size {length_dimension}\" x {width_dimension}\", correct?\n")
+    get_confirmation()
+    return length_dimension, width_dimension, total_available

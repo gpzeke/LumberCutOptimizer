@@ -109,3 +109,34 @@ class TestGetPartDimension(unittest.TestCase):
         mock_print.assert_any_call("2 parts needed of size 8.0\" x 3.5\", correct?\n")
         self.assertIn(mock.call("Invalid number"), mock_print.call_args_list)
         self.assertEqual(result, (Decimal('8.0'), Decimal('3.5'), 2))
+
+class TestGetStockDimension(unittest.TestCase):
+    @patch('builtins.print')
+    @patch('user_input.get_decimal_input', side_effect=[Decimal('48'), Decimal('96')])
+    @patch('user_input.get_integer_input', return_value=4)
+    @patch('user_input.get_confirmation', return_value=True)
+    def test_multiple_stock_dimension(self, mock_confirm, mock_int_input, mock_dec_input, mock_print):
+        get_stock_dimension()
+
+        self.assertEqual(mock_dec_input.call_count, 2)
+        mock_int_input.assert_called_once()
+        mock_confirm.assert_called_once()
+        mock_print.assert_any_call('4 pieces available of size 48" x 96", correct?\n')
+
+    @patch('builtins.print')
+    @patch('user_input.input', side_effect=[
+        'bad',
+        '60',
+        'nope',
+        '120',
+        'wrong',
+        '1',
+    ])
+    @patch('user_input.get_confirmation', return_value=True)
+    def test_get_stock_dimension_with_retries_and_single_stock(self, mock_confirm, mock_input, mock_print):
+        get_stock_dimension()
+
+        mock_confirm.assert_called_once()
+        self.assertEqual(mock_input.call_count, 6)  # 3 invalid
+        self.assertIn(mock.call("Invalid number"), mock_print.call_args_list)
+        mock_print.assert_any_call('1 piece available of size 60\" x 120\", correct?\n')
